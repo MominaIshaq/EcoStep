@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoStep - About & Mission</title>
+  <meta name="description" content="Learn about EcoStep's mission and the Earth's journey: past → present → future." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="about">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Eco Tips</a></li>
+        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="nav-toggle neon" onclick="toggleMode2050()" aria-label="Toggle 2050 mode"><i class="fas fa-rocket"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="journey-section" style="padding-top:6.5rem;" data-theme="forest">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-earth-americas"></i> Our Mission</h2>
+      <p class="section-subtitle">Empowering everyone to take small steps for a greener planet.</p>
+
+      <div class="timeline">
+        <div class="timeline-step" data-theme="water">
+          <div class="timeline-dot"></div>
+          <h3><i class="fas fa-seedling"></i> Past</h3>
+          <p>The Earth thrived with abundant forests and clean waterways. Communities lived closely with nature.</p>
+        </div>
+        <div class="timeline-step" data-theme="city">
+          <div class="timeline-dot"></div>
+          <h3><i class="fas fa-city"></i> Present</h3>
+          <p>Rapid urbanization and consumption increased emissions, waste, and energy usage — but awareness is growing.</p>
+        </div>
+        <div class="timeline-step" data-theme="future">
+          <div class="timeline-dot"></div>
+          <h3><i class="fas fa-satellite"></i> Future</h3>
+          <p>With collective action, we can restore ecosystems, conserve resources, and create resilient, green cities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+          <p class="footer-description">Making the world greener, one step at a time.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Take Quiz</a></li>
+            <li><a href="tips.html">Eco Tips</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

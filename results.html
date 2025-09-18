@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoStep - Results</title>
+  <meta name="description" content="Your EcoStep quiz results and visualizations." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="results">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Eco Tips</a></li>
+        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="nav-toggle neon" onclick="toggleMode2050()" aria-label="Toggle 2050 mode"><i class="fas fa-rocket"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="results-section" style="padding-top:6.5rem;">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-chart-line"></i> Your Carbon Footprint Results</h2>
+      <div class="results-container">
+        <div class="score-display">
+          <div class="circular-meter" aria-label="Overall eco score">
+            <svg viewBox="0 0 120 120" class="circular-svg">
+              <defs>
+                <linearGradient id="meterGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#68d391" />
+                  <stop offset="100%" stop-color="#38a169" />
+                </linearGradient>
+              </defs>
+              <circle class="meter-bg" cx="60" cy="60" r="54" />
+              <circle class="meter-progress" id="circularProgress" cx="60" cy="60" r="54" stroke="url(#meterGradient)" />
+            </svg>
+            <div class="circular-center">
+              <div id="circularPercent">0%</div>
+              <small>Eco Score</small>
+            </div>
+          </div>
+          <div class="score-circle">
+            <div class="score-number" id="scoreNumber">0</div>
+            <div class="score-label">Carbon Points</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+
+        <div class="result-message">
+          <div class="avatar-wrap">
+            <div id="ecoAvatar" class="eco-avatar" aria-label="Eco Avatar"><i class="fas fa-tree"></i></div>
+            <div id="ecoTitle" class="eco-title">Eco Explorer</div>
+          </div>
+          <h3 id="resultTitle">Loading...</h3>
+          <p id="resultDescription">Please wait while we analyze your responses...</p>
+          <div class="eco-animations">
+            <div class="tree-visualization"><div class="trees" id="treeVisualization"></div></div>
+            <div class="leaf-field" id="leafField" aria-hidden="true"></div>
+            <div class="water-ripple" id="waterRipple" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a class="action-btn retake-btn" href="quiz.html"><i class="fas fa-redo"></i> Retake Quiz</a>
+          <a class="action-btn tips-btn" href="tips.html"><i class="fas fa-lightbulb"></i> Get Eco Tips</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="viz-section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-chart-pie"></i> Your Eco Impact Visualized</h2>
+      <p class="section-subtitle">Estimated savings based on your results</p>
+      <div class="viz-grid">
+        <div class="viz-card reveal" aria-live="polite">
+          <div class="viz-icon trees"><i class="fas fa-tree"></i></div>
+          <div class="viz-value" id="vizTrees">0</div>
+          <div class="viz-label">Trees Saved / Year</div>
+        </div>
+        <div class="viz-card reveal">
+          <div class="viz-icon water"><i class="fas fa-droplet"></i></div>
+          <div class="viz-value" id="vizWater">0</div>
+          <div class="viz-label">Liters of Water Saved</div>
+        </div>
+        <div class="viz-card reveal">
+          <div class="viz-icon energy"><i class="fas fa-bolt"></i></div>
+          <div class="viz-value" id="vizEnergy">0</div>
+          <div class="viz-label">kWh Energy Saved</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+          <p class="footer-description">Making the world greener, one step at a time.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Take Quiz</a></li>
+            <li><a href="tips.html">Eco Tips</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

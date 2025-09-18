@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoStep - Tips & Resources</title>
+  <meta name="description" content="Eco tips, videos and a downloadable checklist to live greener." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="tips">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Eco Tips</a></li>
+        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="nav-toggle neon" onclick="toggleMode2050()" aria-label="Toggle 2050 mode"><i class="fas fa-rocket"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="tips-section" style="padding-top:6.5rem;">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-leaf"></i> Eco-Friendly Tips</h2>
+      <p class="section-subtitle">Simple changes that make a big difference for our planet</p>
+
+      <div style="text-align:center;margin-bottom:1rem;">
+        <div class="tip-card" style="display:inline-block;max-width:720px;">
+          <h3 class="tip-title" style="margin-bottom:.5rem;">Daily Tip</h3>
+          <p id="dailyTipText" class="tip-description">Loading...</p>
+          <button id="dailyTipBtn" class="action-btn" style="margin-top:.5rem;"><i class="fas fa-shuffle"></i> New Tip</button>
+        </div>
+      </div>
+
+      <div class="tips-grid">
+        <div class="tip-card" data-tip="Carry a reusable bottle to cut plastic waste and save money!">
+          <div class="tip-icon"><i class="fas fa-bottle-water"></i></div>
+          <h3 class="tip-title">Use Reusable Bottles</h3>
+          <p class="tip-description">Switch to reusable water bottles and reduce plastic waste by up to 1,460 bottles per year.</p>
+          <div class="tip-impact"><i class="fas fa-tree"></i><span>Saves 2 trees annually</span></div>
+        </div>
+
+        <div class="tip-card" data-tip="Public transport reduces CO2 emissions dramatically per passenger.">
+          <div class="tip-icon"><i class="fas fa-bus"></i></div>
+          <h3 class="tip-title">Use Public Transport</h3>
+          <p class="tip-description">Take the bus, train, or bike instead of driving. Public transport reduces CO2 emissions significantly.</p>
+          <div class="tip-impact"><i class="fas fa-tree"></i><span>Saves 5 trees annually</span></div>
+        </div>
+
+        <div class="tip-card" data-tip="LED bulbs use up to 80% less energy and last longer.">
+          <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
+          <h3 class="tip-title">Save Electricity</h3>
+          <p class="tip-description">Switch to LED bulbs, unplug devices when not in use, and turn off lights when leaving rooms.</p>
+          <div class="tip-impact"><i class="fas fa-tree"></i><span>Saves 3 trees annually</span></div>
+        </div>
+
+        <div class="tip-card" data-tip="Sort your waste and upcycle items to extend their life.">
+          <div class="tip-icon"><i class="fas fa-recycle"></i></div>
+          <h3 class="tip-title">Recycle & Reuse</h3>
+          <p class="tip-description">Properly sort your waste, recycle materials, and find creative ways to reuse items before throwing them away.</p>
+          <div class="tip-impact"><i class="fas fa-tree"></i><span>Saves 4 trees annually</span></div>
+        </div>
+
+        <div class="tip-card" data-tip="Plan meals and store food correctly to avoid spoilage.">
+          <div class="tip-icon"><i class="fas fa-utensils"></i></div>
+          <h3 class="tip-title">Reduce Food Waste</h3>
+          <p class="tip-description">Plan your meals, store food properly, and compost organic waste to minimize your food footprint.</p>
+          <div class="tip-impact"><i class="fas fa-tree"></i><span>Saves 6 trees annually</span></div>
+        </div>
+
+        <div class="tip-card" data-tip="A single reusable bag can replace hundreds of plastic bags.">
+          <div class="tip-icon"><i class="fas fa-shopping-bag"></i></div>
+          <h3 class="tip-title">Bring Your Own Bags</h3>
+          <p class="tip-description">Use reusable shopping bags instead of plastic bags. One reusable bag can replace 1000+ plastic bags.</p>
+          <div class="tip-impact"><i class="fas fa-tree"></i><span>Saves 1 tree annually</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;" class="reveal">
+        <h3 class="section-title" style="font-size:1.5rem;"><i class="fas fa-video"></i> Short Eco Tutorials</h3>
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-icon"><i class="fas fa-droplet"></i></div>
+            <h3 class="tip-title">Save Water at Home</h3>
+            <div class="tip-description">
+              <iframe width="100%" height="220" src="https://www.youtube.com/embed/2KztT9h6x6k" title="Save Water" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon"><i class="fas fa-bolt"></i></div>
+            <h3 class="tip-title">Cut Energy Usage</h3>
+            <div class="tip-description">
+              <iframe width="100%" height="220" src="https://www.youtube.com/embed/1g1D5Jt_8r8" title="Save Energy" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem; text-align:center;" class="reveal">
+        <a class="action-btn" href="assets/downloads/eco-checklist.pdf" download><i class="fas fa-file-download"></i> Download Eco Checklist (PDF)</a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+          <p class="footer-description">Making the world greener, one step at a time.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Take Quiz</a></li>
+            <li><a href="tips.html">Eco Tips</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

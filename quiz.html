@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep - Quiz</title>
+  <meta name="description" content="Take the EcoStep quiz to measure your carbon footprint.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="quiz">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Eco Tips</a></li>
+        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="nav-toggle neon" onclick="toggleMode2050()" aria-label="Toggle 2050 mode"><i class="fas fa-rocket"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <section id="quiz" class="quiz-section" style="padding-top:6.5rem;">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-question-circle"></i> Carbon Footprint Quiz</h2>
+      <p class="section-subtitle">Answer these questions to calculate your daily environmental impact</p>
+
+      <div class="quiz-container">
+        <div class="quiz-progress" aria-label="Quiz completion">
+          <div class="quiz-progress-bar"><div id="quizProgressFill" class="quiz-progress-fill" style="width:0%"></div></div>
+          <div class="quiz-progress-label"><span id="quizProgressText">0%</span> Complete</div>
+        </div>
+
+        <div class="question-card active" data-question="1">
+          <h3 class="question-title"><i class="fas fa-car"></i> How do you usually commute to work/school?</h3>
+          <div class="slider-control">
+            <input type="range" min="0" max="3" step="1" value="" class="quiz-slider" data-name="transport" aria-label="Transport impact"/>
+            <div class="slider-labels">
+              <span><i class="fas fa-home"></i> WFH</span>
+              <span><i class="fas fa-bicycle"></i> Bike/Walk</span>
+              <span><i class="fas fa-bus"></i> Bus/Train</span>
+              <span><i class="fas fa-car"></i> Car Daily</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" data-question="2">
+          <h3 class="question-title"><i class="fas fa-bottle-water"></i> How many plastic bottles do you use daily?</h3>
+          <div class="slider-control">
+            <input type="range" min="0" max="3" step="1" value="" class="quiz-slider" data-name="bottles" aria-label="Plastic bottles per day"/>
+            <div class="slider-labels">
+              <span><i class="fas fa-ban"></i> Reusable</span>
+              <span><i class="fas fa-minus"></i> 1</span>
+              <span><i class="fas fa-equals"></i> 2-3</span>
+              <span><i class="fas fa-plus"></i> 3+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" data-question="3">
+          <h3 class="question-title"><i class="fas fa-utensils"></i> How often do you waste food?</h3>
+          <div class="slider-control">
+            <input type="range" min="0" max="3" step="1" value="" class="quiz-slider" data-name="food" aria-label="Food waste frequency"/>
+            <div class="slider-labels">
+              <span><i class="fas fa-grin"></i> Never</span>
+              <span><i class="fas fa-smile"></i> Rarely</span>
+              <span><i class="fas fa-meh"></i> Sometimes</span>
+              <span><i class="fas fa-frown"></i> Often</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" data-question="4">
+          <h3 class="question-title"><i class="fas fa-lightbulb"></i> How conscious are you about electricity usage?</h3>
+          <div class="slider-control">
+            <input type="range" min="0" max="3" step="1" value="" class="quiz-slider" data-name="electricity" aria-label="Electricity consciousness"/>
+            <div class="slider-labels">
+              <span><i class="fas fa-star"></i> Very</span>
+              <span><i class="fas fa-check"></i> Usually</span>
+              <span><i class="fas fa-question"></i> Sometimes</span>
+              <span><i class="fas fa-times"></i> Rarely</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" data-question="5">
+          <h3 class="question-title"><i class="fas fa-recycle"></i> How often do you recycle or reuse items?</h3>
+          <div class="slider-control">
+            <input type="range" min="0" max="3" step="1" value="" class="quiz-slider" data-name="recycle" aria-label="Recycling frequency"/>
+            <div class="slider-labels">
+              <span><i class="fas fa-star"></i> Always</span>
+              <span><i class="fas fa-thumbs-up"></i> Often</span>
+              <span><i class="fas fa-meh"></i> Sometimes</span>
+              <span><i class="fas fa-times"></i> Rarely</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-navigation">
+          <button class="nav-btn prev-btn" onclick="previousQuestion()" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+          <div class="progress-indicator"><span class="current-question">1</span> / <span class="total-questions">5</span></div>
+          <button class="nav-btn next-btn" onclick="nextQuestion()">Next <i class="fas fa-arrow-right"></i></button>
+          <button class="nav-btn calculate-btn" onclick="calculateFootprint()" style="display:none;"><i class="fas fa-calculator"></i> Calculate My Footprint</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+          <p class="footer-description">Making the world greener, one step at a time.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Take Quiz</a></li>
+            <li><a href="tips.html">Eco Tips</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
