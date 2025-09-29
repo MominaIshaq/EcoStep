@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep • Carbon Diary</title>
+  <meta name="description" content="Log daily eco actions and track weekly trends.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="diary">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Tips</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="calendar.html">Calendar</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+      </ul>
+      <div class="nav-actions"><div id="authControls"></div></div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:100px;padding-bottom:60px">
+    <h1 class="section-title"><i class="fas fa-book"></i> Carbon Diary</h1>
+    <p class="section-subtitle">Record your daily eco actions and see weekly trends.</p>
+
+    <div class="viz-card">
+      <form id="diaryForm" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+        <input type="date" id="diaryDate" required />
+        <select id="diaryAction" required>
+          <option value="">Select action...</option>
+          <option value="bike">Biked/Walked</option>
+          <option value="public">Public Transport</option>
+          <option value="recycle">Recycled</option>
+          <option value="veg">Plant-based Meal</option>
+          <option value="save-power">Saved Electricity</option>
+        </select>
+        <input type="number" id="diaryPoints" placeholder="Points (1-5)" min="1" max="5" required />
+        <button class="nav-btn" type="submit"><i class="fas fa-plus"></i> Add</button>
+      </form>
+    </div>
+
+    <div class="panel-grid" style="margin-top:1rem">
+      <div class="panel-card">
+        <h3 class="future-title"><i class="fas fa-chart-column"></i> Weekly Trend</h3>
+        <div style="height:240px"><canvas id="diaryChart"></canvas></div>
+      </div>
+      <div class="panel-card">
+        <h3 class="future-title"><i class="fas fa-list"></i> Recent Entries</h3>
+        <ul id="diaryList" class="lb" style="list-style:none;padding:0;margin:0"></ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const KEY = 'eco_diary';
+    function read(){ try { return JSON.parse(localStorage.getItem(KEY)||'[]'); } catch { return []; } }
+    function write(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+    function render(){
+      const data = read();
+      const list = document.getElementById('diaryList');
+      list.innerHTML = data.slice(-10).reverse().map(d=>`<li style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:1px dashed #e2e8f0"><span>${d.date} • ${d.action}</span><span>${d.points} pts</span></li>`).join('') || '<p>No entries yet.</p>';
+      renderChart(data);
+    }
+    function renderChart(data){
+      const byDay = Array(7).fill(0);
+      data.forEach(d=>{ const dt = new Date(d.date); const i = dt.getDay(); byDay[i] += Number(d.points)||0; });
+      const ctx = document.getElementById('diaryChart');
+      if (!ctx) return;
+      new Chart(ctx, { type:'bar', data:{ labels:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], datasets:[{ label:'Eco points', data:byDay, backgroundColor:'#68d391' }] }, options:{ responsive:true, maintainAspectRatio:false } });
+    }
+    document.getElementById('diaryForm').addEventListener('submit', (e)=>{
+      e.preventDefault(); const date = diaryDate.value; const action = diaryAction.value; const points = Number(diaryPoints.value);
+      if (!date || !action || !points) return;
+      const data = read(); data.push({ date, action, points }); write(data); render(); e.target.reset();
+    });
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -10,20 +10,15 @@
   <style>
     .community-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1rem}
     .card{background:#fff;border-radius:14px;padding:1rem;box-shadow:0 6px 24px rgba(0,0,0,.08)}
-    body.dark .card{background:#0b1220}
     .post{display:flex;gap:.5rem;align-items:flex-start;margin:.5rem 0}
     .post-icon{width:34px;height:34px;border-radius:50%;background:#e6fffa;display:flex;align-items:center;justify-content:center;color:#2f855a}
     .post-content{color:#2d3748}
-    body.dark .post-content{color:#e2e8f0}
     .lb{list-style:none;padding:0;margin:0}
     .lb li{display:flex;justify-content:space-between;padding:.5rem;border-bottom:1px dashed #e2e8f0}
-    body.dark .lb li{border-color:#1f2937}
     .pledge-form{display:grid;gap:.5rem}
     .pledge-form input,.pledge-form textarea{padding:.6rem;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#2d3748}
-    body.dark .pledge-form input,body.dark .pledge-form textarea{background:#0b1220;color:#e2e8f0;border-color:#1f2937}
     .pledges{list-style:none;padding:0;margin-top:.5rem}
     .pledges li{padding:.5rem;border-left:4px solid #38a169;background:#f7fafc;margin:.4rem 0;border-radius:6px}
-    body.dark .pledges li{background:#0f172a}
   </style>
 </head>
 <body data-page="community">
@@ -35,16 +30,14 @@
       <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
       <ul class="nav-menu">
         <li><a class="nav-link" href="index.html">Home</a></li>
-        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
-        <li><a class="nav-link" href="results.html">Results</a></li>
-        <li><a class="nav-link" href="tips.html">Eco Tips</a></li>
-        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
-        <li><a class="nav-link" href="community.html">Community</a></li>
         <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
-        <button class="nav-toggle neon" onclick="toggleMode2050()" aria-label="Toggle 2050 mode"><i class="fas fa-rocket"></i></button>
+        <div id="authControls"></div>
       </div>
     </div>
   </nav>
@@ -100,7 +93,7 @@
           <ul class="footer-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="quiz.html">Take Quiz</a></li>
-            <li><a href="tips.html">Eco Tips</a></li>
+            <li><a href="hub.html">Hub</a></li>
           </ul>
         </div>
         <div class="footer-section">
@@ -119,6 +112,7 @@
     </div>
   </footer>
 
+  <script src="auth.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

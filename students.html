@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep - Students</title>
+  <meta name="description" content="Carbon curriculum, eco-challenges, and badges for students.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .student-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .student-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .student-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+    .student-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .student-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+    .student-description {
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .badge-item {
+      text-align: center;
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+    }
+    .badge-item.earned {
+      border-color: #38a169;
+      background: #f0fff4;
+    }
+    .badge-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #a0aec0;
+    }
+    .badge-item.earned .badge-icon {
+      color: #38a169;
+    }
+    .badge-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #2d3748;
+    }
+    .challenge-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .challenge-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .challenge-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      backdrop-filter: blur(10px);
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #68d391;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body data-page="students">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="tips-section" style="padding-top: 6.5rem;">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Student Carbon Curriculum</h2>
+      <p class="section-subtitle">Learn, earn badges, and compete with your schoolmates in eco-challenges</p>
+
+      <div class="student-grid">
+        <div class="student-card">
+          <div class="student-icon"><i class="fas fa-book"></i></div>
+          <h3 class="student-title">Carbon Basics</h3>
+          <p class="student-description">Learn the fundamentals of carbon footprint, climate change, and environmental science.</p>
+          <div class="badge-grid">
+            <div class="badge-item earned">
+              <div class="badge-icon"><i class="fas fa-seedling"></i></div>
+              <div class="badge-name">Green Beginner</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-leaf"></i></div>
+              <div class="badge-name">Eco Scholar</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-globe"></i></div>
+              <div class="badge-name">Climate Expert</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card">
+          <div class="student-icon"><i class="fas fa-trophy"></i></div>
+          <h3 class="student-title">Eco Challenges</h3>
+          <p class="student-description">Complete weekly challenges to reduce your carbon footprint and earn points.</p>
+          <div class="badge-grid">
+            <div class="badge-item earned">
+              <div class="badge-icon"><i class="fas fa-recycle"></i></div>
+              <div class="badge-name">Recycler</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-bicycle"></i></div>
+              <div class="badge-name">Cyclist</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-water"></i></div>
+              <div class="badge-name">Water Saver</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card">
+          <div class="student-icon"><i class="fas fa-users"></i></div>
+          <h3 class="student-title">School Competition</h3>
+          <p class="student-description">Compete with other schools in Pakistan to see who can reduce their carbon footprint the most.</p>
+          <div class="badge-grid">
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-school"></i></div>
+              <div class="badge-name">School Hero</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-medal"></i></div>
+              <div class="badge-name">Champion</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-crown"></i></div>
+              <div class="badge-name">Eco King/Queen</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card">
+          <div class="student-icon"><i class="fas fa-microscope"></i></div>
+          <h3 class="student-title">Science Projects</h3>
+          <p class="student-description">Hands-on experiments and projects to understand environmental science better.</p>
+          <div class="badge-grid">
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-flask"></i></div>
+              <div class="badge-name">Scientist</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-lightbulb"></i></div>
+              <div class="badge-name">Innovator</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-rocket"></i></div>
+              <div class="badge-name">Inventor</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card">
+          <div class="student-icon"><i class="fas fa-chart-line"></i></div>
+          <h3 class="student-title">Track Progress</h3>
+          <p class="student-description">Monitor your environmental impact and see how your actions make a difference.</p>
+          <div class="badge-grid">
+            <div class="badge-item earned">
+              <div class="badge-icon"><i class="fas fa-chart-bar"></i></div>
+              <div class="badge-name">Tracker</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-trending-up"></i></div>
+              <div class="badge-name">Improver</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-star"></i></div>
+              <div class="badge-name">Achiever</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card">
+          <div class="student-icon"><i class="fas fa-certificate"></i></div>
+          <h3 class="student-title">Certificates</h3>
+          <p class="student-description">Earn digital certificates for completing courses and achieving milestones.</p>
+          <div class="badge-grid">
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-award"></i></div>
+              <div class="badge-name">Graduate</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-gem"></i></div>
+              <div class="badge-name">Master</div>
+            </div>
+            <div class="badge-item">
+              <div class="badge-icon"><i class="fas fa-trophy"></i></div>
+              <div class="badge-name">Legend</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge-section">
+        <h3 class="challenge-title"><i class="fas fa-target"></i> This Week's Challenges</h3>
+        <p>Complete these challenges to earn points and badges</p>
+        
+        <div class="challenge-grid">
+          <div class="challenge-card">
+            <h4><i class="fas fa-bottle-water"></i> No Plastic Week</h4>
+            <p>Use only reusable bottles for 7 days</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 60%;"></div>
+            </div>
+            <small>4/7 days completed</small>
+          </div>
+          <div class="challenge-card">
+            <h4><i class="fas fa-bicycle"></i> Bike to School</h4>
+            <p>Ride your bike to school 3 times this week</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 100%;"></div>
+            </div>
+            <small>3/3 days completed ✓</small>
+          </div>
+          <div class="challenge-card">
+            <h4><i class="fas fa-recycle"></i> Recycling Drive</h4>
+            <p>Collect 10 recyclable items from home</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 80%;"></div>
+            </div>
+            <small>8/10 items collected</small>
+          </div>
+          <div class="challenge-card">
+            <h4><i class="fas fa-seedling"></i> Plant a Tree</h4>
+            <p>Plant one tree in your school or neighborhood</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 0%;"></div>
+            </div>
+            <small>0/1 trees planted</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+          <p class="footer-description">Making the world greener, one step at a time.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Take Quiz</a></li>
+            <li><a href="hub.html">Hub</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

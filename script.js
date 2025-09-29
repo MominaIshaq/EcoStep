@@ -26,6 +26,84 @@ function scrollToSection(elementId) {
     }
 }
 
+// integrate auth preference syncing
+function syncDarkPreferenceToProfile(){
+    try { if (window.EcoAuth) EcoAuth.savePreferences({ darkMode: document.body.classList.contains('dark') }); } catch {}
+}
+
+// ===== AUTH UI OVERRIDES (Navbar + Redirects) =====
+function installAuthOverrides() {
+    if (!window.EcoAuth || window.__ecoAuthOverridesInstalled) return;
+    window.__ecoAuthOverridesInstalled = true;
+
+    const originalOpen = EcoAuth.openAuthModal;
+
+    function escapeHtml(str){
+        return String(str || '').replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+    }
+
+    function renderNavAuth() {
+        const el = document.getElementById('authControls');
+        if (!el) return;
+        const user = EcoAuth.getCurrentUser && EcoAuth.getCurrentUser();
+        if (user) {
+            el.innerHTML = `
+                <span class="welcome-msg" aria-live="polite">👉 Welcome, ${escapeHtml(user.name)}!</span>
+                <a class="nav-toggle" href="profile.html" aria-label="Profile"><i class="fas fa-user-circle"></i></a>
+                <button class="nav-toggle" id="navLogoutBtn" aria-label="Logout"><i class="fas fa-sign-out-alt"></i></button>
+            `;
+            const btn = el.querySelector('#navLogoutBtn');
+            if (btn) btn.addEventListener('click', () => { try { EcoAuth.logout(); } finally { window.location.href = 'index.html'; } });
+        } else {
+            el.innerHTML = `
+                <button class="nav-toggle" id="navLoginBtn" aria-label="Login"><i class="fas fa-right-to-bracket"></i></button>
+                <button class="nav-toggle" id="navSignupBtn" aria-label="Sign Up"><i class="fas fa-user-plus"></i></button>
+            `;
+            const login = el.querySelector('#navLoginBtn');
+            const signup = el.querySelector('#navSignupBtn');
+            if (login) login.addEventListener('click', () => EcoAuth.openAuthModal('login'));
+            if (signup) signup.addEventListener('click', () => EcoAuth.openAuthModal('signup'));
+        }
+    }
+
+    // override renderAuthUI to our navbar renderer
+    EcoAuth.renderAuthUI = renderNavAuth;
+
+    // override openAuthModal to set tab and redirect to home after success
+    EcoAuth.openAuthModal = function(initialTab){
+        // call original to build modal if available
+        if (typeof originalOpen === 'function') originalOpen(initialTab);
+        // ensure desired tab
+        try {
+            if (initialTab) {
+                const tabBtn = document.querySelector(`#authModal .tab[data-tab="${initialTab}"]`);
+                if (tabBtn) tabBtn.click();
+            }
+        } catch {}
+        // swap submit handlers to redirect
+        setTimeout(() => {
+            const loginForm = document.querySelector('#authModal #loginForm');
+            const signupForm = document.querySelector('#authModal #signupForm');
+            if (loginForm && !loginForm.__ecoBound) {
+                loginForm.__ecoBound = true;
+                loginForm.addEventListener('submit', function onLoginSubmit(){
+                    // after auth.js handles, redirect home
+                    setTimeout(() => { window.location.href = 'index.html'; }, 0);
+                }, { once: true });
+            }
+            if (signupForm && !signupForm.__ecoBound) {
+                signupForm.__ecoBound = true;
+                signupForm.addEventListener('submit', function onSignupSubmit(){
+                    setTimeout(() => { window.location.href = 'index.html'; }, 0);
+                }, { once: true });
+            }
+        }, 0);
+    };
+
+    // initial render if container exists
+    renderNavAuth();
+}
+
 // ===== GO TO TOP BUTTON =====
 function injectGoTopButton() {
     if (document.querySelector('.go-top')) return; // already exists
@@ -807,16 +885,7 @@ function updateAvatarAndTitle(category) {
 }
 
 // ===== THEME TOGGLES =====
-function toggleDarkMode() {
-    document.body.classList.toggle('dark');
-    localStorage.setItem('eco_dark', document.body.classList.contains('dark') ? '1' : '0');
-}
-
-function toggleMode2050() {
-    document.body.classList.toggle('mode-2050');
-    localStorage.setItem('eco_2050', document.body.classList.contains('mode-2050') ? '1' : '0');
-    updateFutureProjections();
-}
+// Removed dark/light and 2050 UI toggles per requirements
 
 function updateFutureProjections() {
     // Simple projections based on lastScore
@@ -840,7 +909,6 @@ function updateFutureProjections() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🌱 EcoStep Carbon Footprint Tracker Initialized');
     
-    // Initialize global/shared features
     initializeNavigation();
     improveAccessibility();
     optimizePerformance();
@@ -850,25 +918,27 @@ document.addEventListener('DOMContentLoaded', function() {
     injectGoTopButton();
     initTiltEffects();
 
+    installAuthOverrides();
+    if (window.EcoAuth) { try { EcoAuth.renderAuthUI(); } catch {} }
     const page = document.body.getAttribute('data-page') || '';
 
-    // Page: Home (no special init required)
-
-    // Page: Quiz
     if (page === 'quiz') {
+        const logged = window.EcoAuth && EcoAuth.getCurrentUser();
+        if (!logged) {
+            showNotification('You can try the quiz now. Login to save your results.', 'info');
+            setTimeout(()=>{ if (window.EcoAuth) EcoAuth.openAuthModal(); }, 300);
+        }
         initializeKeyboardNavigation();
         initializeSliders();
         updateQuizProgress();
         updateNavigationButtons();
     }
 
-    // Page: Results
     if (page === 'results') {
         loadResultsFromStorage();
         updateFutureProjections();
     }
 
-    // Page: Tips (daily tip generator)
     if (page === 'tips') {
         const tips = [
             'Carry a reusable bottle to cut plastic waste and save money!',
@@ -888,95 +958,44 @@ document.addEventListener('DOMContentLoaded', function() {
         shuffle();
     }
 
-    // Page: Future
-    if (page === 'future') {
-        updateFutureProjections();
-    }
+    if (page === 'future') { updateFutureProjections(); }
+    if (page === 'community') { initCommunity(); }
 
-    // Page: Community
-    if (page === 'community') {
-        initCommunity();
-    }
-    // restore theme preferences
-    if (localStorage.getItem('eco_dark') === '1') document.body.classList.add('dark');
-    if (localStorage.getItem('eco_2050') === '1') document.body.classList.add('mode-2050');
-    
-    // Set up initial quiz state if quiz page
     if (page === 'quiz') updateNavigationButtons();
-    
-    // Add welcome message on home only
+
     if (page === 'home') {
         setTimeout(() => {
+            // keep welcome toast minimal
             showNotification('Welcome to EcoStep! Take our quiz to discover your carbon footprint.', 'success');
         }, 800);
     }
-    
-    // Add CSS animations for notifications
+
     const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-        
-        .notification-content {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .notification-close {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 0.25rem;
-            margin-left: auto;
-        }
-        
-        .notification-close:hover {
-            opacity: 0.7;
-        }
-    `;
+    style.textContent = `@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOutRight{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}.notification-content{display:flex;align-items:center;gap:.5rem}.notification-close{background:none;border:none;color:#fff;cursor:pointer;padding:.25rem;margin-left:auto}.notification-close:hover{opacity:.7}`;
     document.head.appendChild(style);
+
+    // Inject minimal navbar welcome styles for consistency
+    if (!document.getElementById('authWelcomeStyles')) {
+        const s = document.createElement('style');
+        s.id = 'authWelcomeStyles';
+        s.textContent = `
+            .welcome-msg{color:#2d3748;font-weight:600;background:#f0fff4;border:1px solid #b2f5ea;border-radius:999px;padding:.3rem .6rem;margin-right:.25rem}
+            body.dark .welcome-msg{color:#e2e8f0;background:#0b3d2d;border-color:#1b6b55}
+            .hide-sm{display:inline}
+            @media(max-width:768px){.hide-sm{display:none}.welcome-msg{display:none}}
+        `;
+        document.head.appendChild(s);
+    }
 });
 
-// ===== ERROR HANDLING =====
-
-/**
- * Global error handler for better user experience
- */
+// Reduce noisy global alerts: log to console only
 window.addEventListener('error', function(e) {
     const detail = e?.error?.message || e?.message || 'Unknown error';
-    console.error('EcoStep Error:', detail);
-    // Avoid spamming identical notifications
-    showNotification('Something went wrong. Please refresh the page and try again.', 'error');
+    console.warn('EcoStep Error:', detail);
 });
-
-/**
- * Handle unhandled promise rejections
- */
 window.addEventListener('unhandledrejection', function(e) {
     const detail = (e && e.reason && (e.reason.message || String(e.reason))) || 'Unknown reason';
-    console.error('EcoStep Promise Rejection:', detail);
-    showNotification('An unexpected error occurred. Please try again.', 'error');
+    console.warn('EcoStep Promise Rejection:', detail);
 });
 
 // ===== EXPORT FUNCTIONS FOR GLOBAL ACCESS =====

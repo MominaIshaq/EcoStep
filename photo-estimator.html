@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep • Photo Estimator</title>
+  <meta name="description" content="Upload a photo of meals, outfits or receipts to estimate footprint.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .uploader{max-width:720px;margin:0 auto;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:1rem;text-align:center}
+    body.dark .uploader{background:#111827}
+    .preview{margin-top:1rem}
+    .preview img{max-width:100%;border-radius:12px}
+  </style>
+</head>
+<body data-page="photo-estimator">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Eco Tips</a></li>
+        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="nav-toggle neon" onclick="toggleMode2050()" aria-label="Toggle 2050 mode"><i class="fas fa-rocket"></i></button>
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:100px;padding-bottom:60px">
+    <h1 class="section-title"><i class="fas fa-camera"></i> Photo-Based Footprint Estimator</h1>
+    <p class="section-subtitle">Upload a photo of a meal, outfit, or receipt. We will estimate its footprint.</p>
+
+    <div class="uploader">
+      <input type="file" id="fileInput" accept="image/*" />
+      <button class="nav-btn" id="analyzeBtn" disabled><i class="fas fa-magic"></i> Analyze</button>
+      <div class="preview" id="preview"></div>
+      <div id="estimate" class="tip-description" style="margin-top:1rem"></div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+
+  <script src="auth.js"></script>
+  <script>
+    const input = document.getElementById('fileInput');
+    const btn = document.getElementById('analyzeBtn');
+    const preview = document.getElementById('preview');
+    const est = document.getElementById('estimate');
+    let dataUrl = '';
+    input.addEventListener('change', (e)=>{
+      const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
+      reader.onload = (ev)=>{ dataUrl = ev.target.result; preview.innerHTML = `<img src="${dataUrl}" alt="Uploaded preview" />`; btn.disabled=false; };
+      reader.readAsDataURL(file);
+    });
+    function simulateEstimate(){
+      const classes = ['beef','lentils','chicken','veggies','fast-fashion','cotton','electronics','paper'];
+      const pick = classes[Math.floor(Math.random()*classes.length)];
+      const map = {
+        beef: 'High footprint (~27 kg CO₂e/kg). Consider plant-based alternatives today. ✅',
+        lentils: 'Low footprint (~0.9 kg CO₂e/kg). Great sustainable choice! 🌱',
+        chicken: 'Moderate footprint. Pair with veggies for a lower impact meal.',
+        veggies: 'Very low footprint. Seasonal produce is best! 🥦',
+        'fast-fashion': 'High impact (synthetic + short lifecycle). Choose durable, local brands.',
+        cotton: 'Moderate impact (water intensive). Prefer organic and long-lasting items.',
+        electronics: 'Embodied carbon is high. Extend lifespan and recycle responsibly.',
+        paper: 'Low-to-moderate. Recycle and go digital when possible.'
+      };
+      return map[pick];
+    }
+    btn.addEventListener('click', ()=>{
+      est.textContent = 'Analyzing photo...';
+      setTimeout(()=>{ est.textContent = simulateEstimate(); }, 700);
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

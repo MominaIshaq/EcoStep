@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoStep - Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="profile">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:100px;padding-bottom:60px">
+    <section id="profileCard" aria-live="polite">
+      <h1 class="section-title" style="justify-content:flex-start"><i class="fas fa-user-circle"></i> Profile</h1>
+      <p class="section-subtitle" style="text-align:left;max-width:none">Manage your EcoStep account and preferences</p>
+      <div id="profileContent"><!-- Filled by script --></div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const box = document.getElementById('profileContent');
+      const user = window.EcoAuth && EcoAuth.getCurrentUser ? EcoAuth.getCurrentUser() : null;
+      if (!user) {
+        box.innerHTML = `
+          <div class="result-message">
+            <h3><i class="fas fa-lock"></i> You're not logged in</h3>
+            <p>Please login or sign up to view your profile.</p>
+            <button class="nav-btn" id="goLogin"><i class="fas fa-right-to-bracket"></i> Login / Sign Up</button>
+          </div>
+        `;
+        document.getElementById('goLogin').addEventListener('click', ()=>{
+          if (window.EcoAuth) EcoAuth.openAuthModal('login');
+        });
+        return;
+      }
+
+      const historyCount = (user.history || []).length;
+      const badges = (user.badges || []).map(b=>`<span class=\"badge\">${b}</span>`).join('') || '<span class=\"badge\">No badges yet</span>';
+      const initials = (user.name||'U').split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase();
+      box.innerHTML = `
+        <div style=\"display:flex;align-items:center;gap:1rem;margin:.5rem 0 1rem 0\">
+          <div class=\"eco-avatar happy\" aria-label=\"Avatar\" style=\"width:64px;height:64px;font-weight:800;font-size:1.1rem\">${initials}</div>
+          <div>
+            <div style=\"font-weight:800;color:#2d3748;font-size:1.25rem\">${user.name}</div>
+            <div style=\"color:#4a5568\">${user.email}</div>
+          </div>
+        </div>
+        <div style=\"margin:.5rem 0;color:#2d3748\">
+          <h2 style=\"font-size:1.2rem;margin:.25rem 0\"><i class=\"fas fa-id-badge\"></i> Account</h2>
+          <ul style=\"list-style:none;padding:0;margin:.25rem 0;color:#4a5568\">
+            <li><strong>Member since:</strong> ${new Date(user.createdAt).toLocaleDateString()}</li>
+            <li><strong>Results saved:</strong> ${historyCount}</li>
+          </ul>
+        </div>
+        <div style=\"margin:1rem 0\">
+          <h2 style=\"font-size:1.2rem;margin:.25rem 0\"><i class=\"fas fa-medal\"></i> Badges</h2>
+          <div>${badges}</div>
+        </div>
+        <div class=\"action-buttons\" style=\"margin-top:1rem\">
+          <button class=\"retake-btn action-btn\" id=\"logoutHere\"><i class=\"fas fa-sign-out-alt\"></i> Logout</button>
+          <a class=\"action-btn\" href=\"dashboard.html\"><i class=\"fas fa-chart-line\"></i> Go to Dashboard</a>
+        </div>
+      `;
+      document.getElementById('logoutHere').addEventListener('click', ()=>{ try { EcoAuth.logout(); } finally { window.location.href = 'index.html'; } });
+    });
+  </script>
+</body>
+</html>

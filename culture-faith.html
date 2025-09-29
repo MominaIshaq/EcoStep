@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep - Culture & Faith</title>
+  <meta name="description" content="Sustainability tips rooted in Islamic values and cultural practices.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .culture-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .culture-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .culture-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+    .culture-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #38a169, #68d391);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .culture-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+    .culture-description {
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .culture-tip {
+      background: #f7fafc;
+      border-left: 4px solid #38a169;
+      padding: 0.75rem;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: #2d3748;
+    }
+    .ramadan-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .ramadan-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ramadan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .ramadan-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body data-page="culture-faith">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="tips-section" style="padding-top: 6.5rem;">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-mosque"></i> Culture & Faith</h2>
+      <p class="section-subtitle">Sustainability tips rooted in Islamic values and Pakistani culture</p>
+
+      <div class="culture-grid">
+        <div class="culture-card">
+          <div class="culture-icon"><i class="fas fa-water"></i></div>
+          <h3 class="culture-title">Water Conservation in Islam</h3>
+          <p class="culture-description">The Prophet (PBUH) taught us to conserve water even while performing ablution. Use only what you need and avoid waste.</p>
+          <div class="culture-tip">"Do not waste water even if you were at a running stream" - Prophet Muhammad (PBUH)</div>
+        </div>
+
+        <div class="culture-card">
+          <div class="culture-icon"><i class="fas fa-seedling"></i></div>
+          <h3 class="culture-title">Planting Trees</h3>
+          <p class="culture-description">Planting trees is considered charity in Islam. Every tree you plant continues to give rewards even after your death.</p>
+          <div class="culture-tip">"If a Muslim plants a tree, whatever is eaten from it is charity from him" - Prophet Muhammad (PBUH)</div>
+        </div>
+
+        <div class="culture-card">
+          <div class="culture-icon"><i class="fas fa-utensils"></i></div>
+          <h3 class="culture-title">Halal & Sustainable Eating</h3>
+          <p class="culture-description">Choose locally grown, organic foods that are both halal and environmentally friendly. Support local farmers.</p>
+          <div class="culture-tip">Eat seasonal fruits and vegetables from local markets to reduce carbon footprint.</div>
+        </div>
+
+        <div class="culture-card">
+          <div class="culture-icon"><i class="fas fa-recycle"></i></div>
+          <h3 class="culture-title">Moderation & Balance</h3>
+          <p class="culture-description">Islam teaches moderation in all things. Apply this principle to consumption - buy only what you need.</p>
+          <div class="culture-tip">"The best of people are those who are most beneficial to others" - Prophet Muhammad (PBUH)</div>
+        </div>
+
+        <div class="culture-card">
+          <div class="culture-icon"><i class="fas fa-heart"></i></div>
+          <h3 class="culture-title">Community Care</h3>
+          <p class="culture-description">Help neighbors and community members adopt eco-friendly practices. Share knowledge and resources.</p>
+          <div class="culture-tip">Organize community clean-up drives during weekends or before Eid celebrations.</div>
+        </div>
+
+        <div class="culture-card">
+          <div class="culture-icon"><i class="fas fa-sun"></i></div>
+          <h3 class="culture-title">Solar Energy</h3>
+          <p class="culture-description">Pakistan receives abundant sunlight. Consider solar panels for your home or business to reduce electricity bills.</p>
+          <div class="culture-tip">Many mosques in Pakistan are now using solar energy - follow their example!</div>
+        </div>
+      </div>
+
+      <div class="ramadan-section">
+        <h3 class="ramadan-title"><i class="fas fa-moon"></i> Eco-Friendly Ramadan & Eid</h3>
+        <p>Special tips for sustainable Islamic celebrations</p>
+        
+        <div class="ramadan-grid">
+          <div class="ramadan-card">
+            <h4><i class="fas fa-clock"></i> Iftar Planning</h4>
+            <p>Plan meals carefully to avoid food waste. Cook in smaller portions and share with neighbors.</p>
+          </div>
+          <div class="ramadan-card">
+            <h4><i class="fas fa-gift"></i> Eid Gifts</h4>
+            <p>Choose sustainable gifts like plants, reusable items, or experiences instead of disposable products.</p>
+          </div>
+          <div class="ramadan-card">
+            <h4><i class="fas fa-tshirt"></i> Eid Clothes</h4>
+            <p>Buy quality clothes that last longer, or consider renting formal wear for special occasions.</p>
+          </div>
+          <div class="ramadan-card">
+            <h4><i class="fas fa-home"></i> Home Decorations</h4>
+            <p>Use natural decorations like flowers and plants instead of plastic decorations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+          <p class="footer-description">Making the world greener, one step at a time.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Take Quiz</a></li>
+            <li><a href="hub.html">Hub</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

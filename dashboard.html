@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoStep • Dashboard</title>
+    <meta name="description" content="Your EcoStep dashboard: track carbon footprint progress, goals, and badges.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <style>
+      .dash-header{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center}
+      .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1rem}
+      .stat-card{background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:1rem;display:flex;align-items:center;gap:.75rem}
+      .stat-card i{font-size:1.25rem;color:#38a169}
+      body.dark .stat-card{background:#111827}
+      .tabs{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
+      .tab{padding:.5rem 1rem;border:1px solid #e2e8f0;border-radius:999px;background:#fff;cursor:pointer}
+      .tab.active{background:#38a169;color:#fff;border-color:#2f855a}
+      body.dark .tab{background:#111827;color:#e2e8f0;border-color:#374151}
+      .tabpanels{margin-top:1rem}
+      .tabpanel{display:none}
+      .tabpanel.active{display:block}
+      .panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+      @media (max-width: 900px){ .panel-grid{grid-template-columns:1fr} }
+      .panel-card{background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:1rem}
+      body.dark .panel-card{background:#111827}
+      .badges{display:flex;flex-wrap:wrap;gap:.5rem}
+    </style>
+</head>
+<body data-page="dashboard">
+    <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+    <div id="pageTransition" aria-hidden="true"></div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="results.html" class="nav-link">Results</a></li>
+                <li><a href="hub.html" class="nav-link">Hub</a></li>
+                <li><a href="community.html" class="nav-link">Community</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div id="authControls"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="padding-top:100px;padding-bottom:60px">
+        <div class="dash-header">
+          <div>
+            <h1 class="section-title" style="justify-content:flex-start"><i class="fas fa-chart-line"></i> Dashboard</h1>
+            <p class="section-subtitle">Overview of your progress, goals and badges</p>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><i class="fas fa-leaf"></i><div><div class="viz-label">Latest Score</div><div id="statScore" class="viz-value">—</div></div></div>
+          <div class="stat-card"><i class="fas fa-ranking-star"></i><div><div class="viz-label">Best Score</div><div id="statBest" class="viz-value">—</div></div></div>
+          <div class="stat-card"><i class="fas fa-fire"></i><div><div class="viz-label">Streak</div><div id="statStreak" class="viz-value">0 days</div></div></div>
+          <div class="stat-card"><i class="fas fa-medal"></i><div><div class="viz-label">Badges</div><div id="statBadges" class="viz-value">0</div></div></div>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="overview" role="tab">Overview</button>
+          <button class="tab" data-tab="history" role="tab">History</button>
+          <button class="tab" data-tab="badges" role="tab">Badges</button>
+          <button class="tab" data-tab="goals" role="tab">Goals</button>
+        </div>
+        <div class="tabpanels">
+          <section id="panel-overview" class="tabpanel active" role="tabpanel">
+            <div class="panel-grid">
+              <div class="panel-card">
+                <h3 class="future-title"><i class="fas fa-wave-square"></i> Trend (last 12)</h3>
+                <div style="height:240px"><canvas id="historyChart"></canvas></div>
+              </div>
+              <div class="panel-card">
+                <h3 class="future-title"><i class="fas fa-chart-pie"></i> Latest Breakdown</h3>
+                <div style="height:240px"><canvas id="breakdownChart"></canvas></div>
+              </div>
+              <div class="panel-card">
+                <h3 class="future-title"><i class="fas fa-user-circle"></i> Carbon Avatar</h3>
+                <div style="display:flex;align-items:center;gap:1rem">
+                  <img id="carbonAvatar" src="assets/avatars/neutral.png" alt="Carbon Avatar" style="width:96px;height:96px;border-radius:12px;border:1px solid #e2e8f0"/>
+                  <div>
+                    <div class="viz-label">Your current state</div>
+                    <div id="avatarState" class="viz-value">Neutral</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-card">
+                <h3 class="future-title"><i class="fas fa-gauge"></i> Visual Impact Meter</h3>
+                <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);margin:0">
+                  <div class="stat-card"><i class="fas fa-tree"></i><div><div class="viz-label">Trees</div><div id="impactTrees" class="viz-value">0</div></div></div>
+                  <div class="stat-card"><i class="fas fa-droplet"></i><div><div class="viz-label">Water (L)</div><div id="impactWater" class="viz-value">0</div></div></div>
+                  <div class="stat-card"><i class="fas fa-car"></i><div><div class="viz-label">Km avoided</div><div id="impactKm" class="viz-value">0</div></div></div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="panel-history" class="tabpanel" role="tabpanel">
+            <div class="panel-card">
+              <h3 class="future-title"><i class="fas fa-table-list"></i> Recent Results</h3>
+              <ul id="historyList" class="lb" style="list-style:none;padding:0;margin:0"></ul>
+            </div>
+          </section>
+          <section id="panel-badges" class="tabpanel" role="tabpanel">
+            <div class="panel-card">
+              <h3 class="future-title"><i class="fas fa-medal"></i> Earned Badges</h3>
+              <div id="badgesList" class="badges"></div>
+            </div>
+          </section>
+          <section id="panel-goals" class="tabpanel" role="tabpanel">
+            <div class="panel-card">
+              <h3 class="future-title"><i class="fas fa-bullseye"></i> Goals</h3>
+              <div id="goalsList">Coming soon</div>
+            </div>
+          </section>
+        </div>
+    </main>
+
+    <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="dashboard.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', ()=>{
+        document.querySelectorAll('.tab').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            document.querySelectorAll('.tab').forEach(b=> b.classList.toggle('active', b===btn));
+            document.querySelectorAll('.tabpanel').forEach(p=> p.classList.remove('active'));
+            document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+          });
+        });
+      });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html> 

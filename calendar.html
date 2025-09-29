@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep • Carbon Calendar</title>
+  <meta name="description" content="Track emissions and highlight low-carbon days and streaks.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem}
+    .cell{background:#fff;border-radius:10px;padding:.75rem;min-height:70px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+    body.dark .cell{background:#111827}
+    .low{outline:2px solid #38a169}
+    .streak{background:linear-gradient(135deg,#e6fffa,#f0fff4)}
+  </style>
+</head>
+<body data-page="calendar">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Tips</a></li>
+        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="marketplace.html">Marketplace</a></li>
+        <li><a class="nav-link" href="calendar.html">Calendar</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+        <li><a class="nav-link" href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:100px;padding-bottom:60px">
+    <h1 class="section-title"><i class="fas fa-calendar-alt"></i> Carbon Calendar</h1>
+    <p class="section-subtitle">Low-carbon days and upcoming themes like Meatless Monday.</p>
+    <div class="cal" id="calendar"></div>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+
+  <script src="auth.js"></script>
+  <script>
+    const cal = document.getElementById('calendar');
+    const days = 35; // simple 5 weeks
+    for (let i=1;i<=days;i++){
+      const d = document.createElement('div'); d.className='cell'; d.innerHTML = `<strong>${i}</strong>`;
+      if (i%7===1) d.classList.add('low');
+      if (i%5===0) d.classList.add('streak');
+      cal.appendChild(d);
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -73,6 +73,35 @@ body {
     color: #38a169;
 }
 
+/* language switcher & auth controls */
+#langSwitcher select {
+    padding: 0.35rem 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    margin-right: 0.5rem;
+}
+
+/* Additional navbar and card polish */
+.nav-actions { display:flex; align-items:center; gap: .5rem; }
+.nav-toggle { background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:.5rem .6rem; cursor:pointer; transition: all .2s; }
+.nav-toggle:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,.08); }
+.viz-card { background:#fff; border-radius:14px; padding:1rem; box-shadow:0 10px 30px rgba(0,0,0,.06); }
+.badge { display:inline-block; background:#e6fffa; color:#2f855a; border:1px solid #b2f5ea; padding:.25rem .6rem; border-radius:999px; font-weight:600; margin:.25rem; }
+
+/* modal basics reused */
+.modal { max-width: 480px; }
+.hidden { display:none; }
+
+/* dark mode overrides */
+body.dark { background:#0f1720; color:#e2e8f0; }
+body.dark .navbar { background: rgba(15,23,32,0.8); }
+body.dark .nav-link { color:#e2e8f0; }
+body.dark .nav-link:hover { color:#68d391; }
+body.dark #langSwitcher select { background:#1f2937; color:#e2e8f0; border-color:#374151; }
+body.dark .viz-card { background:#111827; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+body.dark .badge { background:#0b3d2d; color:#aff6d0; border-color:#1b6b55; }
+
 /* ===== HERO SECTION ===== */
 .hero {
     height: 100vh;
@@ -763,7 +792,7 @@ body {
 
 /* ===== NEW: NAV ACTIONS / TOGGLES ===== */
 .nav-actions { display: flex; align-items: center; gap: .5rem; }
-.nav-toggle { width:40px;height:40px;border-radius:50%;border:2px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center;color:#2d3748;cursor:pointer;transition:.3s; }
+.nav-toggle { width:40px;height:40px;border-radius:50%;border:2px solid #e2e8f0;background:#fff;align-items:center;justify-content:center;color:#2d3748;cursor:pointer;transition:.3s; }
 .nav-toggle:hover { border-color:#38a169; box-shadow:0 0 0 4px rgba(56,161,105,.15); transform:translateY(-2px); }
 .nav-toggle.neon { border-color:#38a169; box-shadow:0 0 10px rgba(56,161,105,.5), inset 0 0 6px rgba(56,161,105,.3); }
 

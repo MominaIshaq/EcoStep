@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep • AI Coach</title>
+  <meta name="description" content="Chat with EcoAI for daily eco micro-actions and motivation.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .coach {max-width:900px;margin:0 auto}
+    .chat {background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:1rem}
+    body.dark .chat{background:#111827}
+    .row{display:flex;gap:.5rem;margin:.5rem 0}
+    .row.ai .bubble{background:#e6fffa;border:1px solid #b2f5ea}
+    .row.user {justify-content:flex-end}
+    .bubble{max-width:75%;padding:.6rem .8rem;border-radius:12px;background:#edf2f7}
+    body.dark .bubble{background:#1f2937;color:#e2e8f0}
+    .inputbar{display:flex;gap:.5rem;margin-top:.75rem}
+    .inputbar input{flex:1;padding:.6rem;border-radius:10px;border:1px solid #e2e8f0}
+  </style>
+</head>
+<body data-page="ai-coach">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="tips.html">Eco Tips</a></li>
+        <li><a class="nav-link" href="future.html">2050 Mode</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="nav-toggle neon" onclick="toggleMode2050()" aria-label="Toggle 2050 mode"><i class="fas fa-rocket"></i></button>
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:100px;padding-bottom:60px">
+    <div class="coach">
+      <h1 class="section-title"><i class="fas fa-user-nurse"></i> AI Lifestyle Coach</h1>
+      <p class="section-subtitle">A friendly coach with daily micro-actions for a greener life.</p>
+      <div class="chat" id="coachChat" aria-live="polite"></div>
+      <div class="inputbar">
+        <input id="coachInput" type="text" placeholder="Ask EcoAI for a tip..." aria-label="Chat input" />
+        <button class="nav-btn" id="coachSend"><i class="fas fa-paper-plane"></i> Send</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+
+  <script src="auth.js"></script>
+  <script>
+    const presets = [
+      'Skip meat today and try a lentil daal — lower carbon, high protein!',
+      'Walk to nearby errands today — count it as 2,000 green steps.',
+      'Carry a reusable bottle; refill twice to avoid 2 plastic bottles.',
+      'Unplug 3 idle devices before bed to reduce phantom power.',
+      'Use a ceiling fan for 1 hour less AC usage this evening.'
+    ];
+    const chat = document.getElementById('coachChat');
+    function pushAI(text){ const row = document.createElement('div'); row.className='row ai'; row.innerHTML = `<div class="bubble">${text}</div>`; chat.appendChild(row); chat.scrollTop = chat.scrollHeight; }
+    function pushUser(text){ const row = document.createElement('div'); row.className='row user'; row.innerHTML = `<div class="bubble">${text}</div>`; chat.appendChild(row); chat.scrollTop = chat.scrollHeight; }
+    function replyTo(message){
+      const lower = message.toLowerCase();
+      if (lower.includes('meat')) return 'Great idea! Try a veggie biryani or aloo gobi today.';
+      if (lower.includes('transport')|| lower.includes('walk')|| lower.includes('bike')) return 'Consider a 10-minute walk or a short bike ride to nearby shops.';
+      if (lower.includes('water')) return 'Take a 5-minute shower and turn off the tap while brushing.';
+      return presets[Math.floor(Math.random()*presets.length)];
+    }
+    function boot(){ pushAI('Assalamualaikum! I am EcoAI. How can I help you go greener today?'); pushAI('Daily micro-action: Swap one meat meal for lentils.'); }
+    boot();
+    document.getElementById('coachSend').addEventListener('click', ()=>{
+      const inp = document.getElementById('coachInput');
+      const text = inp.value.trim(); if (!text) return; pushUser(text); inp.value='';
+      setTimeout(()=> pushAI(replyTo(text)), 400);
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep - Social Network</title>
+  <meta name="description" content="Connect with eco-warriors, join Green Squads, and share your journey.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .social-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .social-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+    .social-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #38a169, #68d391);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .social-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+    .social-description {
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .post-feed {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .post-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+    .post-meta {
+      flex: 1;
+    }
+    .post-author {
+      font-weight: 600;
+      color: #2d3748;
+    }
+    .post-time {
+      font-size: 0.9rem;
+      color: #718096;
+    }
+    .post-content {
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .post-actions {
+      display: flex;
+      gap: 1rem;
+      color: #718096;
+      font-size: 0.9rem;
+    }
+    .post-action {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .post-action:hover {
+      color: #38a169;
+    }
+    .squad-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .squad-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .squad-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .squad-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      backdrop-filter: blur(10px);
+    }
+    .squad-name {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .squad-members {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .join-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+    .join-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body data-page="social">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="tips-section" style="padding-top: 6.5rem;">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-users"></i> EcoStep Social Network</h2>
+      <p class="section-subtitle">Connect with eco-warriors, join Green Squads, and share your sustainability journey</p>
+
+      <div class="social-grid">
+        <div class="social-card">
+          <div class="social-icon"><i class="fas fa-share-alt"></i></div>
+          <h3 class="social-title">Share Your Wins</h3>
+          <p class="social-description">Post about your eco-friendly actions, tips, and achievements to inspire others.</p>
+        </div>
+
+        <div class="social-card">
+          <div class="social-icon"><i class="fas fa-users-cog"></i></div>
+          <h3 class="social-title">Green Squads</h3>
+          <p class="social-description">Join or create teams with friends, family, or colleagues to work together on environmental goals.</p>
+        </div>
+
+        <div class="social-card">
+          <div class="social-icon"><i class="fas fa-heart"></i></div>
+          <h3 class="social-title">Support Others</h3>
+          <p class="social-description">Like, comment, and encourage fellow eco-warriors on their sustainability journey.</p>
+        </div>
+
+        <div class="social-card">
+          <div class="social-icon"><i class="fas fa-trophy"></i></div>
+          <h3 class="social-title">Leaderboards</h3>
+          <p class="social-description">Compete with friends and see who's making the biggest environmental impact.</p>
+        </div>
+
+        <div class="social-card">
+          <div class="social-icon"><i class="fas fa-calendar"></i></div>
+          <h3 class="social-title">Events & Meetups</h3>
+          <p class="social-description">Join local environmental events, clean-up drives, and eco-friendly meetups.</p>
+        </div>
+
+        <div class="social-card">
+          <div class="social-icon"><i class="fas fa-lightbulb"></i></div>
+          <h3 class="social-title">Tips Exchange</h3>
+          <p class="social-description">Share and discover new ways to live more sustainably from the community.</p>
+        </div>
+      </div>
+
+      <div class="post-feed">
+        <h3><i class="fas fa-rss"></i> Recent Posts</h3>
+        <div class="post-item">
+          <div class="post-header">
+            <div class="post-avatar">A</div>
+            <div class="post-meta">
+              <div class="post-author">Ahmad Khan</div>
+              <div class="post-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="post-content">
+            Just switched to solar panels for my home! My electricity bill has dropped by 60% and I'm feeling great about reducing my carbon footprint. 🌞⚡
+          </div>
+          <div class="post-actions">
+            <div class="post-action"><i class="fas fa-heart"></i> 24</div>
+            <div class="post-action"><i class="fas fa-comment"></i> 8</div>
+            <div class="post-action"><i class="fas fa-share"></i> Share</div>
+          </div>
+        </div>
+
+        <div class="post-item">
+          <div class="post-header">
+            <div class="post-avatar">S</div>
+            <div class="post-meta">
+              <div class="post-author">Sara Ahmed</div>
+              <div class="post-time">5 hours ago</div>
+            </div>
+          </div>
+          <div class="post-content">
+            Started a community garden in our neighborhood! We're growing organic vegetables and teaching kids about sustainable farming. 🥬🌱
+          </div>
+          <div class="post-actions">
+            <div class="post-action"><i class="fas fa-heart"></i> 42</div>
+            <div class="post-action"><i class="fas fa-comment"></i> 15</div>
+            <div class="post-action"><i class="fas fa-share"></i> Share</div>
+          </div>
+        </div>
+
+        <div class="post-item">
+          <div class="post-header">
+            <div class="post-avatar">M</div>
+            <div class="post-meta">
+              <div class="post-author">Muhammad Ali</div>
+              <div class="post-time">1 day ago</div>
+            </div>
+          </div>
+          <div class="post-content">
+            Tip: Use old newspapers to wrap gifts instead of buying wrapping paper. It's eco-friendly and gives gifts a unique vintage look! 📰🎁
+          </div>
+          <div class="post-actions">
+            <div class="post-action"><i class="fas fa-heart"></i> 18</div>
+            <div class="post-action"><i class="fas fa-comment"></i> 6</div>
+            <div class="post-action"><i class="fas fa-share"></i> Share</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="squad-section">
+        <h3 class="squad-title"><i class="fas fa-users-cog"></i> Join a Green Squad</h3>
+        <p>Team up with others to achieve environmental goals together</p>
+        
+        <div class="squad-grid">
+          <div class="squad-card">
+            <div class="squad-name">Karachi Eco Warriors</div>
+            <div class="squad-members">127 members • Active</div>
+            <button class="join-btn">Join Squad</button>
+          </div>
+          <div class="squad-card">
+            <div class="squad-name">Sindh Green Team</div>
+            <div class="squad-members">89 members • Active</div>
+            <button class="join-btn">Join Squad</button>
+          </div>
+          <div class="squad-card">
+            <div class="squad-name">Student Environmentalists</div>
+            <div class="squad-members">156 members • Active</div>
+            <button class="join-btn">Join Squad</button>
+          </div>
+          <div class="squad-card">
+            <div class="squad-name">Family Eco Challenge</div>
+            <div class="squad-members">45 members • Active</div>
+            <button class="join-btn">Join Squad</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+          <p class="footer-description">Making the world greener, one step at a time.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Take Quiz</a></li>
+            <li><a href="hub.html">Hub</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

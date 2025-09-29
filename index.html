@@ -11,6 +11,11 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#38a169">
+    <meta property="og:title" content="EcoStep - Carbon Footprint Tracker">
+    <meta property="og:description" content="Discover your environmental impact and get personalized tips.">
+    <meta property="og:type" content="website">
 </head>
 <body data-page="home">
     <!-- Background Particles Layer -->
@@ -26,22 +31,14 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="quiz.html" class="nav-link">Quiz</a></li>
-                <li><a href="results.html" class="nav-link">Results</a></li>
-                <li><a href="tips.html" class="nav-link">Eco Tips</a></li>
-                <li><a href="future.html" class="nav-link">2050 Mode</a></li>
-                <li><a href="community.html" class="nav-link">Community</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="results.html" class="nav-link">Results</a></li>
+                <li><a href="hub.html" class="nav-link">Hub</a></li>
+                <li><a href="community.html" class="nav-link">Community</a></li>
             </ul>
             <div class="nav-actions">
-                <!-- Global Dark Mode Toggle -->
-                <button class="nav-toggle" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <!-- Futuristic 2050 Mode Toggle -->
-                <button class="nav-toggle neon" id="mode2050Toggle" onclick="toggleMode2050()" aria-label="Toggle 2050 mode">
-                    <i class="fas fa-rocket"></i>
-                </button>
+                <div id="authControls"></div>
             </div>
         </div>
     </nav>
@@ -60,7 +57,7 @@
             <div class="hero-text">
                 <h1 class="hero-title">
                     <i class="fas fa-seedling"></i>
-                    EcoStep
+                    <span>EcoStep</span>
                 </h1>
                 <p class="hero-tagline">Your Personal Carbon Footprint Tracker</p>
                 <p class="hero-description">
@@ -269,24 +266,17 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="quiz.html">Take Quiz</a></li>
                         <li><a href="tips.html">Eco Tips</a></li>
+                        <li><a href="hub.html">Hub</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
                     <h4>Follow Us</h4>
                     <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
@@ -299,6 +289,15 @@
     </footer>
 
     <!-- Custom JavaScript -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('service-worker.js');
+        });
+      }
+    </script>
+    <script src="auth.js"></script>
     <script src="script.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', ()=> { if (window.EcoAuth) EcoAuth.renderAuthUI(); });</script>
 </body>
 </html>

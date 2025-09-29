@@ -1,0 +1,6 @@
+[
+  {"question":"Which diet typically has the lowest carbon footprint?","choices":["Beef-heavy","Chicken-focused","Plant-based","Keto"],"answer":2},
+  {"question":"What saves the most household energy?","choices":["Turning off one bulb","Switching to LEDs","Painting walls white","Using candles"],"answer":1},
+  {"question":"Which transport emits least per km?","choices":["Car alone","Bus/Train","Motorbike","Plane"],"answer":1},
+  {"question":"Best way to cut plastic bottle waste?","choices":["Recycle more","Use smaller bottles","Buy in bulk","Carry a reusable bottle"],"answer":3}
+]

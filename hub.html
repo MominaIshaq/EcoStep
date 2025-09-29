@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoStep • Hub</title>
+  <meta name="description" content="Explore EcoStep features: AI Coach, Photo Estimator, Culture Guides, Local Map, Students, Marketplace, Social, and Calendar.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1rem}
+    .hub-card{display:block;background:#fff;border-radius:14px;padding:1rem;box-shadow:0 10px 30px rgba(0,0,0,.06);text-decoration:none;color:#2d3748;transition:transform .15s, box-shadow .15s}
+    .hub-card:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(0,0,0,.1)}
+    .hub-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#f0fff4;color:#2f855a;margin-bottom:.5rem}
+    .hub-card h3{margin:0 0 .25rem;font-size:1.1rem}
+    .hub-card p{margin:0;color:#4a5568}
+  </style>
+</head>
+<body data-page="hub">
+  <canvas id="particlesCanvas" aria-hidden="true"></canvas>
+  <div id="pageTransition" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><i class="fas fa-leaf"></i><span>EcoStep</span></div>
+      <ul class="nav-menu">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li><a class="nav-link" href="results.html">Results</a></li>
+        <li><a class="nav-link" href="hub.html">Hub</a></li>
+        <li><a class="nav-link" href="community.html">Community</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="authControls"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:100px;padding-bottom:60px">
+    <h1 class="section-title"><i class="fas fa-compass"></i> Feature Hub</h1>
+    <p class="section-subtitle">Discover everything EcoStep offers — built for Pakistan, powered by action.</p>
+    <div class="hub-grid">
+      <a class="hub-card" href="ai-coach.html"><div class="hub-icon"><i class="fas fa-user-nurse"></i></div><h3>AI Lifestyle Coach</h3><p>Daily micro-actions and motivation.</p></a>
+      <a class="hub-card" href="photo-estimator.html"><div class="hub-icon"><i class="fas fa-camera"></i></div><h3>Photo Estimator</h3><p>Estimate footprint from photos.</p></a>
+      <a class="hub-card" href="culture-faith.html"><div class="hub-icon"><i class="fas fa-mosque"></i></div><h3>Culture & Faith Guides</h3><p>Islamic values and seasonal guides.</p></a>
+      <a class="hub-card" href="local-map.html"><div class="hub-icon"><i class="fas fa-map-location-dot"></i></div><h3>Local Impact Map</h3><p>Karachi indicators and neighborhoods.</p></a>
+      <a class="hub-card" href="students.html"><div class="hub-icon"><i class="fas fa-graduation-cap"></i></div><h3>Carbon Curriculum</h3><p>Lessons and school challenges.</p></a>
+      <a class="hub-card" href="marketplace.html"><div class="hub-icon"><i class="fas fa-store"></i></div><h3>Eco Marketplace</h3><p>Local brands and rewards.</p></a>
+      <a class="hub-card" href="social.html"><div class="hub-icon"><i class="fas fa-people-arrows"></i></div><h3>Carbon Social</h3><p>Share wins, form squads.</p></a>
+      <a class="hub-card" href="calendar.html"><div class="hub-icon"><i class="fas fa-calendar-alt"></i></div><h3>Carbon Calendar</h3><p>Streaks and themes.</p></a>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
