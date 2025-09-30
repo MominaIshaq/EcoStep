@@ -26,6 +26,114 @@ function scrollToSection(elementId) {
     }
 }
 
+// ===== SHARED LAYOUT (Navbar/Footer/Favicon/Title) =====
+function renderSharedNavbar() {
+    // Ensure a single navbar exists
+    let nav = document.querySelector('nav.navbar');
+    if (!nav) {
+        nav = document.createElement('nav');
+        nav.className = 'navbar';
+        nav.setAttribute('role', 'navigation');
+        document.body.prepend(nav);
+    }
+    const page = document.body.getAttribute('data-page') || '';
+    const links = [
+        { href: 'index.html', label: 'Home', key: 'home' },
+        { href: 'about.html', label: 'About', key: 'about' },
+        { href: 'dashboard.html', label: 'Dashboard', key: 'dashboard' },
+        { href: 'results.html', label: 'Results', key: 'results' },
+        { href: 'hub.html', label: 'Hub', key: 'hub' },
+        { href: 'community.html', label: 'Community', key: 'community' },
+    ];
+    const menuHtml = links.map(l => `<li><a class="nav-link${page===l.key?' active':''}" href="${l.href}">${l.label}</a></li>`).join('');
+    nav.innerHTML = `
+        <div class="nav-container">
+            <a class="nav-logo" href="index.html" aria-label="EcoStep Home">
+                <i class="fas fa-leaf" aria-hidden="true"></i>
+                <span>EcoStep</span>
+            </a>
+            <button class="nav-mobile-toggle" id="navMobileToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+            <ul class="nav-menu" id="navMenu">${menuHtml}</ul>
+            <div class="nav-actions"><div id="authControls"></div></div>
+        </div>
+    `;
+    // Mobile toggle handler
+    const toggle = nav.querySelector('#navMobileToggle');
+    const menu = nav.querySelector('#navMenu');
+    if (toggle && menu) toggle.addEventListener('click', () => menu.classList.toggle('open'));
+}
+
+function renderSharedFooter() {
+    // Ensure a single footer exists
+    let footer = document.querySelector('footer.footer');
+    if (!footer) {
+        footer = document.createElement('footer');
+        footer.className = 'footer';
+        document.body.appendChild(footer);
+    }
+    footer.innerHTML = `
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo"><i class="fas fa-leaf" aria-hidden="true"></i><span>EcoStep</span></div>
+            <p class="footer-description">Making the world greener, one step at a time.</p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="dashboard.html">Dashboard</a></li>
+              <li><a href="hub.html">Hub</a></li>
+              <li><a href="community.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+              <a href="#" class="social-link" aria-label="X / Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 EcoStep. All rights reserved.</p>
+        </div>
+      </div>`;
+}
+
+function injectBrandingHead() {
+    // Favicon
+    if (!document.querySelector('link[rel="icon"]')) {
+        const link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/svg+xml';
+        link.href = 'favicon.svg';
+        document.head.appendChild(link);
+    }
+    // Google Fonts (Inter + Poppins)
+    if (!document.getElementById('gf-preconnect-1')) {
+        const pc1 = document.createElement('link'); pc1.id='gf-preconnect-1'; pc1.rel='preconnect'; pc1.href='https://fonts.googleapis.com'; document.head.appendChild(pc1);
+        const pc2 = document.createElement('link'); pc2.id='gf-preconnect-2'; pc2.rel='preconnect'; pc2.href='https://fonts.gstatic.com'; pc2.crossOrigin=''; document.head.appendChild(pc2);
+        const gf = document.createElement('link'); gf.id='gf-inter-poppins'; gf.rel='stylesheet'; gf.href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap'; document.head.appendChild(gf);
+    }
+    // Title standardization
+    const page = document.body.getAttribute('data-page') || '';
+    const map = { home:'Home', about:'About', dashboard:'Dashboard', results:'Results', hub:'Hub', community:'Community', tips:'Tips', quiz:'Quiz', students:'Students' };
+    const suffix = map[page] ? ` • ${map[page]}` : '';
+    if (!document.title || !document.title.startsWith('EcoStep')) document.title = `EcoStep${suffix}`;
+}
+
+function removeEmojisFromDOM(root=document.body) {
+    if (!root) return;
+    const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}\u2600-\u27BF]/gu;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(n => { if (emojiRegex.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(emojiRegex, '').replace(/\s{2,}/g,' ').trim(); });
+}
+
 // integrate auth preference syncing
 function syncDarkPreferenceToProfile(){
     try { if (window.EcoAuth) EcoAuth.savePreferences({ darkMode: document.body.classList.contains('dark') }); } catch {}
@@ -361,22 +469,22 @@ function displayResults(score, maxScore) {
     let category, message, trees, color;
     
     if (score <= 3) {
-        category = "Eco Champion! 🌟";
+        category = "Eco Champion!";
         message = "Excellent! Your carbon footprint is very low. You're already making great choices for our planet. Keep up the amazing work!";
         trees = Math.floor(Math.random() * 3) + 8; // 8-10 trees
         color = "#38a169";
     } else if (score <= 7) {
-        category = "Green Warrior! 🌱";
+        category = "Green Warrior!";
         message = "Good job! You're on the right track with eco-friendly habits. A few small changes could make you an Eco Champion!";
         trees = Math.floor(Math.random() * 3) + 5; // 5-7 trees
         color = "#68d391";
     } else if (score <= 11) {
-        category = "Getting Started 🌿";
+        category = "Getting Started";
         message = "You're beginning your eco journey! There's room for improvement, but every small step counts. Check out our tips below!";
         trees = Math.floor(Math.random() * 3) + 2; // 2-4 trees
         color = "#f6ad55";
     } else {
-        category = "Time for Change! 🌍";
+        category = "Time for Change!";
         message = "Your carbon footprint is quite high, but don't worry! Small changes can make a big difference. Start with one tip and build from there.";
         trees = 1;
         color = "#fc8181";
@@ -907,7 +1015,12 @@ function updateFutureProjections() {
  * Initialize all functionality when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🌱 EcoStep Carbon Footprint Tracker Initialized');
+    console.log('EcoStep Carbon Footprint Tracker Initialized');
+    // Shared branding + layout first
+    injectBrandingHead();
+    renderSharedNavbar();
+    renderSharedFooter();
+    removeEmojisFromDOM();
     
     initializeNavigation();
     improveAccessibility();
@@ -960,6 +1073,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (page === 'future') { updateFutureProjections(); }
     if (page === 'community') { initCommunity(); }
+    if (page === 'profile') { initProfile(); }
 
     if (page === 'quiz') updateNavigationButtons();
 
@@ -1011,9 +1125,9 @@ window.retakeQuiz = retakeQuiz;
 function initCommunity() {
     // Mock feed
     const feed = [
-        { user: 'Aisha', text: 'Switched to a reusable bottle this week! 🌊', icon: 'fa-bottle-water' },
-        { user: 'Omar', text: 'Biked to school 3 days in a row 🚲', icon: 'fa-bicycle' },
-        { user: 'Sara', text: 'Replaced all bulbs with LEDs 💡', icon: 'fa-lightbulb' }
+        { user: 'Aisha', text: 'Switched to a reusable bottle this week!', icon: 'fa-bottle-water' },
+        { user: 'Omar', text: 'Biked to school 3 days in a row', icon: 'fa-bicycle' },
+        { user: 'Sara', text: 'Replaced all bulbs with LEDs', icon: 'fa-lightbulb' }
     ];
     const feedEl = document.getElementById('communityFeed');
     if (feedEl) {
@@ -1056,7 +1170,7 @@ function initCommunity() {
             localStorage.setItem('eco_pledges', JSON.stringify(pledges));
             pledgeForm.reset();
             renderPledges();
-            showNotification('Pledge added! 🌱', 'success');
+            showNotification('Pledge added!', 'success');
         });
     }
     renderPledges();
