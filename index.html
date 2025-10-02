@@ -11,7 +11,10 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="manifest" href="./manifest.webmanifest" type="application/manifest+json">
+    <link rel="canonical" href="./index.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="theme-color" content="#38a169">
     <meta property="og:title" content="EcoStep - Carbon Footprint Tracker">
     <meta property="og:description" content="Discover your environmental impact and get personalized tips.">
@@ -47,8 +50,8 @@
     <section id="home" class="hero" data-parallax>
         <div class="hero-background">
             <!-- Looping eco-themed background video with fallback image -->
-            <video class="hero-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=60">
-                <source src="vecteezy_ferns-and-plant-life-in-garden_10291779.mp4" type="video/mp4">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=60">
+                <source src="vecteezy_ferns-and-plant-life-in-garden_10291779.mp4" type="video/mp4" loop>
                 <!-- Fallback: background image is handled via CSS -->
             </video>
             <div class="hero-overlay"></div>
@@ -283,7 +286,7 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2024 EcoStep. All rights reserved. | Built with 💚 for the planet</p>
-                <p>Images from <a href="https://unsplash.com" target="_blank">Unsplash</a> & <a href="https://pexels.com" target="_blank">Pexels</a></p>
+                <p>Images from <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a> & <a href="https://pexels.com" target="_blank" rel="noopener">Pexels</a></p>
             </div>
         </div>
     </footer>

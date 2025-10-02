@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,61 @@
   <meta name="description" content="Discover local eco-friendly brands and products in Pakistan.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .market-hero {
+      background: linear-gradient(135deg, #38a169, #68d391);
+      color: #fff;
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+      /* margin-top: 90px */
+    }
+
+    .market-hero h2 {
+      margin: 0 0 .25rem
+    }
+
+    .market-filters {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin: 1rem 0
+    }
+
+    .market-chip {
+      padding: .4rem .7rem;
+      border-radius: 999px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      color: #2d3748;
+      cursor: pointer
+    }
+
+    .market-chip.active {
+      background: #38a169;
+      color: #fff;
+      border-color: #2f855a
+    }
+
+    .tips-grid .viz-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start
+    }
+
+    .brand-meta {
+      font-size: .9rem;
+      color: #4a5568;
+      margin-top: .35rem
+    }
+
+    .rating {
+      color: #f6ad55;
+      margin-left: .35rem
+    }
+  </style>
 </head>
+
 <body data-page="marketplace">
   <canvas id="particlesCanvas" aria-hidden="true"></canvas>
   <div id="pageTransition" aria-hidden="true"></div>
@@ -28,25 +83,81 @@
         <li><a class="nav-link" href="profile.html">Profile</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        <button class="nav-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode"><i
+            class="fas fa-moon"></i></button>
         <div id="authControls"></div>
       </div>
     </div>
   </nav>
-
-  <main class="container" style="padding-top:100px;padding-bottom:60px">
-    <h1 class="section-title"><i class="fas fa-store"></i> Eco Marketplace</h1>
-    <p class="section-subtitle">Carefully curated local brands: refill stores, thrift, solar, organic farms.</p>
-    <div class="tips-grid">
-      <div class="viz-card"><h3 class="tip-title">GreenGrocer</h3><p class="tip-description">Organic veggies delivery in Karachi. <a href="#">Get 10% off</a></p></div>
-      <div class="viz-card"><h3 class="tip-title">ThriftHub</h3><p class="tip-description">Quality thrift outfits. <a href="#">Redeem coupon</a></p></div>
-      <div class="viz-card"><h3 class="tip-title">SolarLite</h3><p class="tip-description">Rooftop solar installers. <a href="#">Book survey</a></p></div>
+  
+  <h1 class="section-title"><i class="fas fa-store" style="padding-top: 10px;"></i> Eco Marketplace</h1>
+  <p class="section-subtitle">Carefully curated local brands: refill stores, thrift, solar, organic farms.</p>
+  <main class="container" style="padding-bottom:60px">
+    <section class="market-hero" aria-label="Eco Marketplace Overview">
+      <h2><i class="fas fa-store"></i> Support local eco-friendly brands</h2>
+      <p style="opacity:.95">Discover verified options in Karachi and across Pakistan. Save more, waste less.</p>
+      <div class="market-filters" aria-label="Categories">
+        <button class="market-chip active" data-cat="all" aria-pressed="true">All</button>
+        <button class="market-chip" data-cat="groceries">Groceries</button>
+        <button class="market-chip" data-cat="fashion">Thrift</button>
+        <button class="market-chip" data-cat="solar">Solar</button>
+        <button class="market-chip" data-cat="refill">Refill</button>
+      </div>
+    </section>
+    <div class="tips-grid" id="marketGrid">
+      <div class="viz-card" data-cat="groceries">
+        <h3 class="tip-title">GreenGrocer <span class="rating" aria-label="Rating">★ 4.6</span></h3>
+        <p class="tip-description">Organic veggies delivery in Karachi. <a href="#">Get 10% off</a></p>
+        <div class="brand-meta"><i class="fas fa-location-dot"></i> Karachi • <i class="fas fa-truck"></i> Delivery
+        </div>
+      </div>
+      <div class="viz-card" data-cat="fashion">
+        <h3 class="tip-title">ThriftHub <span class="rating" aria-label="Rating">★ 4.4</span></h3>
+        <p class="tip-description">Quality thrift outfits. <a href="#">Redeem coupon</a></p>
+        <div class="brand-meta"><i class="fas fa-location-dot"></i> Nationwide • <i class="fas fa-recycle"></i> Upcycled
+        </div>
+      </div>
+      <div class="viz-card" data-cat="solar">
+        <h3 class="tip-title">SolarLite <span class="rating" aria-label="Rating">★ 4.7</span></h3>
+        <p class="tip-description">Rooftop solar installers. <a href="#">Book survey</a></p>
+        <div class="brand-meta"><i class="fas fa-location-dot"></i> Karachi • <i class="fas fa-solar-panel"></i> Net
+          Metering</div>
+      </div>
     </div>
+
+    <section class="viz-card" style="margin-top:1.5rem" aria-label="Vendor Note">
+      <h3 class="tip-title"><i class="fas fa-shield-alt"></i> Verified Vendors</h3>
+      <p class="tip-description">Listings are community-sourced. Contact us to feature your eco brand.</p>
+    </section>
   </main>
 
-  <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2024 EcoStep</p></div></div></footer>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 EcoStep</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="auth.js"></script>
+  <script>
+    // Simple category filter (non-destructive)
+    (function () {
+      const chips = document.querySelectorAll('.market-chip');
+      const grid = document.getElementById('marketGrid');
+      if (!chips.length || !grid) return;
+      chips.forEach(ch => ch.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        ch.classList.add('active');
+        const cat = ch.dataset.cat;
+        grid.querySelectorAll('.viz-card').forEach(card => {
+          const match = cat === 'all' || card.dataset.cat === cat;
+          card.style.display = match ? 'block' : 'none';
+        });
+      }));
+    })();
+  </script>
   <script src="script.js"></script>
 </body>
+
 </html>

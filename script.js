@@ -26,6 +26,58 @@ function scrollToSection(elementId) {
     }
 }
 
+// ===== MISSING ASSET GUARD (non-intrusive) =====
+document.addEventListener('DOMContentLoaded', () => {
+    // Global SW registration (safe, idempotent)
+    if ('serviceWorker' in navigator) {
+        try {
+            navigator.serviceWorker.getRegistration().then((reg) => {
+                if (!reg) {
+                    navigator.serviceWorker.register('./service-worker.js');
+                }
+            });
+        } catch {}
+    }
+    // If the checklist link doesn't exist in the project, prevent 404 and inform the user
+    const missingPdfLink = document.querySelector('a[href="assets/downloads/eco-checklist.pdf"]');
+    if (missingPdfLink) {
+        missingPdfLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showNotification('Download will be available soon.', 'info');
+        });
+    }
+
+    // Ensure mobile nav toggle works for static navbars
+    try {
+        document.querySelectorAll('nav.navbar .nav-container').forEach((container, idx) => {
+            const menu = container.querySelector('.nav-menu');
+            if (!menu) return;
+            // Ensure menu has an id for aria-controls
+            if (!menu.id) menu.id = `navMenu${idx+1}`;
+            let toggle = container.querySelector('.nav-mobile-toggle');
+            if (!toggle) {
+                toggle = document.createElement('button');
+                toggle.className = 'nav-mobile-toggle';
+                toggle.setAttribute('aria-label', 'Toggle menu');
+                toggle.innerHTML = '<i class="fas fa-bars"></i>';
+                // Insert before the menu
+                const logo = container.querySelector('.nav-logo');
+                if (logo && logo.nextSibling) container.insertBefore(toggle, logo.nextSibling);
+                else container.insertBefore(toggle, menu);
+            }
+            toggle.setAttribute('aria-controls', menu.id);
+            toggle.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false');
+            if (!toggle.__ecoBound) {
+                toggle.__ecoBound = true;
+                toggle.addEventListener('click', () => {
+                    const isOpen = menu.classList.toggle('open');
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+            }
+        });
+    } catch {}
+});
+
 // ===== SHARED LAYOUT (Navbar/Footer/Favicon/Title) =====
 function renderSharedNavbar() {
     // Ensure a single navbar exists
@@ -870,12 +922,8 @@ function handleScroll() {
     const navbar = document.querySelector('.navbar');
     const scrollY = window.scrollY;
     
-    // Add/remove navbar background based on scroll position
-    if (scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-    }
+    // Maintain navbar background; guard if navbar is missing
+    if (navbar) navbar.style.background = 'rgba(255, 255, 255, 0.95)';
 
     // Parallax effect for hero background
     const hero = document.querySelector('[data-parallax] .hero-background');

@@ -13,6 +13,12 @@
     body.dark .cell{background:#111827}
     .low{outline:2px solid #38a169}
     .streak{background:linear-gradient(135deg,#e6fffa,#f0fff4)}
+    .cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-bottom:.5rem;color:#4a5568;font-weight:600}
+    .legend{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;justify-content:center;margin:1rem 0}
+    .legend-item{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .6rem;border:1px solid #e2e8f0;border-radius:999px;background:#fff}
+    .swatch{width:14px;height:14px;border-radius:3px;border:1px solid #e2e8f0}
+    .sw-low{outline:2px solid #38a169; background:#fff}
+    .sw-streak{background:linear-gradient(135deg,#e6fffa,#f0fff4)}
   </style>
 </head>
 <body data-page="calendar">
@@ -44,6 +50,13 @@
   <main class="container" style="padding-top:100px;padding-bottom:60px">
     <h1 class="section-title"><i class="fas fa-calendar-alt"></i> Carbon Calendar</h1>
     <p class="section-subtitle">Low-carbon days and upcoming themes like Meatless Monday.</p>
+    <div class="legend" aria-label="Calendar legend">
+      <span class="legend-item"><span class="swatch sw-low"></span> Low-carbon day</span>
+      <span class="legend-item"><span class="swatch sw-streak"></span> Streak highlight</span>
+    </div>
+    <div class="cal-head" aria-hidden="true">
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
     <div class="cal" id="calendar"></div>
   </main>
 
@@ -59,6 +72,17 @@
       if (i%5===0) d.classList.add('streak');
       cal.appendChild(d);
     }
+    // Accessibility and labels
+    Array.from(cal.children).forEach((cell, idx)=>{
+      const dayNum = idx+1;
+      const flags = [];
+      if (cell.classList.contains('low')) flags.push('low-carbon');
+      if (cell.classList.contains('streak')) flags.push('streak');
+      const extra = flags.length? ` (${flags.join(', ')})` : '';
+      cell.setAttribute('role','gridcell');
+      cell.setAttribute('aria-label', `Day ${dayNum}${extra}`);
+      cell.tabIndex = 0;
+    });
   </script>
   <script src="script.js"></script>
 </body>

@@ -1,0 +1,14 @@
+./index.html
+./about.html
+./dashboard.html
+./results.html
+./hub.html
+./community.html
+./tips.html
+./quiz.html
+./ecoquiz.html
+./carbon-diary.html
+./local-map.html
+./ai-coach.html
+./marketplace.html
+./students.html

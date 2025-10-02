@@ -47,12 +47,16 @@
         const img = document.getElementById('carbonAvatar');
         const stateEl = document.getElementById('avatarState');
         if (!img || !stateEl) return;
-        if (!latest) { img.src = 'assets/avatars/neutral.png'; stateEl.textContent = 'Neutral'; return; }
+        // default and fallback
+        const setNeutral = () => { img.src = 'neutral.png'; stateEl.textContent = 'Neutral'; };
+        img.onerror = () => setNeutral();
+        if (!latest) { setNeutral(); return; }
         const score = latest.score; // max 15
         let state = 'neutral', file = 'neutral.png';
-        if (score <= 5) { state = 'happy'; file = 'happy.png'; }
-        else if (score >= 11) { state = 'sad'; file = 'sad.png'; }
-        img.src = `assets/avatars/${file}`;
+        // Currently only neutral.png exists locally; keep mapping but point to available file
+        if (score <= 5) { state = 'happy'; file = 'neutral.png'; }
+        else if (score >= 11) { state = 'sad'; file = 'neutral.png'; }
+        img.src = file;
         stateEl.textContent = state.charAt(0).toUpperCase() + state.slice(1);
     }
 
