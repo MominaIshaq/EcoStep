@@ -47,7 +47,8 @@ h3,
     width: 100%;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    z-index: 1000;
+    z-index: 9999;
+    isolation: isolate;
     padding: 1rem 0;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
@@ -189,6 +190,7 @@ h3,
     justify-content: center;
     background: linear-gradient(135deg, #68d391 0%, #38a169 100%);
     overflow: hidden;
+    z-index: 0;
 }
 
 .hero-background {
@@ -790,11 +792,21 @@ h3,
         max-height: calc(100vh - 120px);
         overflow-y: auto;
         box-shadow: 0 12px 30px rgba(0, 0, 0, .12);
-        z-index: 1100;
+        z-index: 10001;
+        /* make hidden menu non-interactive and ready to animate */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+        pointer-events: none;
     }
 
     .nav-menu.open {
         display: flex;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
     }
 
     .nav-menu .nav-link {
@@ -1615,7 +1627,7 @@ body.theme-future {
 .journey-section,
 .footer {
     position: relative;
-    z-index: 1;
+    /* z-index: 1; */
 }
 
 /* ===== GO TO TOP BUTTON ===== */
