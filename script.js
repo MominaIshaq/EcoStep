@@ -369,6 +369,7 @@ function observeElements() {
  */
 function nextQuestion() {
     const currentCard = document.querySelector(`[data-question="${currentQuestion}"]`);
+    if (!currentCard) return;
     const slider = currentCard.querySelector('.quiz-slider');
 
     // Require user interaction on slider
@@ -386,8 +387,9 @@ function nextQuestion() {
     if (currentQuestion < totalQuestions) {
         currentQuestion++;
         const nextCard = document.querySelector(`[data-question="${currentQuestion}"]`);
-        nextCard.classList.add('active');
-        document.querySelector('.current-question').textContent = currentQuestion;
+        if (nextCard) nextCard.classList.add('active');
+        const currentQ = document.querySelector('.current-question');
+        if (currentQ) currentQ.textContent = currentQuestion;
         updateNavigationButtons();
         updateQuizProgress();
     }
@@ -400,15 +402,16 @@ function previousQuestion() {
     if (currentQuestion > 1) {
         // Hide current question
         const currentCard = document.querySelector(`[data-question="${currentQuestion}"]`);
-        currentCard.classList.remove('active');
+        if (currentCard) currentCard.classList.remove('active');
         
         // Show previous question
         currentQuestion--;
         const prevCard = document.querySelector(`[data-question="${currentQuestion}"]`);
-        prevCard.classList.add('active');
+        if (prevCard) prevCard.classList.add('active');
         
         // Update progress indicator
-        document.querySelector('.current-question').textContent = currentQuestion;
+        const currentQ = document.querySelector('.current-question');
+        if (currentQ) currentQ.textContent = currentQuestion;
         
         // Update navigation buttons
         updateNavigationButtons();
@@ -425,15 +428,15 @@ function updateNavigationButtons() {
     const calculateBtn = document.querySelector('.calculate-btn');
     
     // Previous button
-    prevBtn.disabled = currentQuestion === 1;
+    if (prevBtn) prevBtn.disabled = currentQuestion === 1;
     
     // Next/Calculate button
     if (currentQuestion === totalQuestions) {
-        nextBtn.style.display = 'none';
-        calculateBtn.style.display = 'flex';
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (calculateBtn) calculateBtn.style.display = 'flex';
     } else {
-        nextBtn.style.display = 'flex';
-        calculateBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'flex';
+        if (calculateBtn) calculateBtn.style.display = 'none';
     }
 }
 
@@ -454,6 +457,7 @@ function updateQuizProgress() {
  */
 function calculateFootprint() {
     const currentCard = document.querySelector(`[data-question="${currentQuestion}"]`);
+    if (!currentCard) return;
     const slider = currentCard.querySelector('.quiz-slider');
     if (!slider || !slider.dataset.chosen) {
         showNotification('Please choose a value using the slider before calculating.', 'warning');
@@ -554,7 +558,57 @@ function displayResults(score, maxScore) {
         spawnLeaves(10);
         updateVisualizationCounters(score, maxScore);
         updateFutureProjections();
+
+        // Append a relevant eco tip and a link to the Tips page (non-intrusive)
+        try {
+            const container = document.querySelector('.results-container');
+            if (container && !document.getElementById('ecoTipCard')) {
+                const tip = getEcoTipForScore(score, maxScore);
+                const tipCard = document.createElement('div');
+                tipCard.className = 'result-message reveal';
+                tipCard.id = 'ecoTipCard';
+                tipCard.setAttribute('aria-live', 'polite');
+                tipCard.innerHTML = `
+                    <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> ${tip.title}</h3>
+                    <p>${tip.text}</p>
+                    <div style="text-align:center;margin-top:.5rem">
+                        <a href="tips.html" class="nav-btn" aria-label="View more eco tips on the Tips page">
+                            <i class="fas fa-leaf"></i> View More Eco Tips
+                        </a>
+                    </div>
+                `;
+                container.appendChild(tipCard);
+            }
+        } catch {}
     }, 1000);
+}
+
+/**
+ * Get a short motivational eco tip based on the user's score
+ * Lower score indicates better footprint
+ */
+function getEcoTipForScore(score, maxScore){
+    const pctBad = score / (maxScore || 1); // higher is worse
+    if (score <= 3) {
+        return {
+            title: 'Keep Leading By Example',
+            text: 'You\'re doing great! Try sharing your habits with a friend or family member this week—mentoring others multiplies impact.'
+        };
+    } else if (score <= 7) {
+        return {
+            title: 'Level Up One Habit',
+            text: 'Pick one area to improve this week: swap 1 car trip for walking/cycling, or switch to LED bulbs in a high‑use room.'
+        };
+    } else if (score <= 11) {
+        return {
+            title: 'Start Small, Build Momentum',
+            text: 'Begin with easy wins: take shorter showers, unplug idle chargers, and bring a reusable bottle when you go out.'
+        };
+    }
+    return {
+        title: 'Big Impact, Simple Steps',
+        text: 'Tackle high‑impact changes first: reduce car use on two days this week and shift one dinner to a plant‑based meal.'
+    };
 }
 
 /**
@@ -822,7 +876,7 @@ function initializeKeyboardNavigation() {
     document.addEventListener('keydown', function(e) {
         // Only handle keyboard navigation when quiz is visible
         const quizSection = document.getElementById('quiz');
-        if (quizSection.style.display === 'none') return;
+        if (!quizSection || quizSection.style.display === 'none') return;
         
         switch(e.key) {
             case 'ArrowRight':
@@ -856,6 +910,7 @@ function initializeKeyboardNavigation() {
  */
 function setSliderValue(index) {
     const currentCard = document.querySelector(`[data-question="${currentQuestion}"]`);
+    if (!currentCard) return;
     const slider = currentCard.querySelector('.quiz-slider');
     if (!slider) return;
     // Clamp index 0..3 to slider value 0..3
@@ -963,6 +1018,7 @@ function initParticles() {
     const canvas = document.getElementById('particlesCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
     const particles = [];
@@ -1042,6 +1098,19 @@ function updateAvatarAndTitle(category) {
 
 // ===== THEME TOGGLES =====
 // Removed dark/light and 2050 UI toggles per requirements
+// Safe global fallbacks to avoid ReferenceErrors from inline handlers
+window.toggleDarkMode = window.toggleDarkMode || function() {
+    document.body.classList.toggle('dark');
+    try { if (window.EcoAuth) EcoAuth.savePreferences({ darkMode: document.body.classList.contains('dark') }); } catch {}
+};
+
+window.toggleMode2050 = window.toggleMode2050 || function() {
+    document.body.classList.toggle('mode-2050');
+};
+
+window.initProfile = window.initProfile || function() {
+    // No-op profile initializer to prevent errors if not implemented yet
+};
 
 function updateFutureProjections() {
     // Simple projections based on lastScore
